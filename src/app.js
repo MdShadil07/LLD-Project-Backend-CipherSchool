@@ -34,39 +34,28 @@ app.use(helmet());
 // CORS
 // --------------------------------------------------
 
-// Explicitly allowed frontend origins.
+// env.clientUrl is already an array because env.js does:
 //
-// IMPORTANT:
-// These must match the browser's Origin exactly.
-// Do NOT add a trailing slash.
+// process.env.CLIENT_URL.split(',').map(...)
+
 const allowedOrigins = [
-  'https://lld-project-frontend-cipher-scho-git-0c4a9e-md-shadils-projects.vercel.app',
-  'https://lld-project-frontend-cipher-school-psi.vercel.app',
+  ...env.clientUrl,
+
+  // Local development
   'http://localhost:5173',
   'http://localhost:3000',
 ];
 
-// Also allow origins configured through Render's CLIENT_URL.
-// This allows you to add/remove frontend URLs without changing code.
-//
-// Example Render value:
-// CLIENT_URL=https://your-frontend.vercel.app
-if (env.clientUrl) {
-  if (Array.isArray(env.clientUrl)) {
-    allowedOrigins.push(...env.clientUrl);
-  } else {
-    allowedOrigins.push(env.clientUrl);
-  }
-}
-// Remove duplicates.
-const uniqueAllowedOrigins = [...new Set(allowedOrigins)];
+const uniqueAllowedOrigins = [
+  ...new Set(allowedOrigins),
+];
 
 console.log('Allowed CORS origins:', uniqueAllowedOrigins);
 
 const corsOptions = {
   origin(origin, callback) {
-    // Requests such as curl/Postman/server-to-server don't have
-    // an Origin header. Allow them.
+    // Allow requests without an Origin header.
+    // Useful for Postman, curl, server-to-server requests, etc.
     if (!origin) {
       return callback(null, true);
     }
@@ -84,7 +73,14 @@ const corsOptions = {
 
   credentials: true,
 
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  methods: [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+  ],
 
   allowedHeaders: [
     'Content-Type',
@@ -94,17 +90,15 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
-// Apply CORS to all routes.
 app.use(cors(corsOptions));
-
-// Explicitly handle preflight requests.
-app.options('*', cors(corsOptions));
 
 // --------------------------------------------------
 // Body parsing
 // --------------------------------------------------
 
-app.use(express.json({ limit: env.jsonBodyLimit }));
+app.use(express.json({
+  limit: env.jsonBodyLimit,
+}));
 
 app.use(cookieParser());
 
@@ -113,7 +107,11 @@ app.use(cookieParser());
 // --------------------------------------------------
 
 app.use(
-  morgan(env.nodeEnv === 'production' ? 'combined' : 'dev')
+  morgan(
+    env.nodeEnv === 'production'
+      ? 'combined'
+      : 'dev'
+  )
 );
 
 // --------------------------------------------------
