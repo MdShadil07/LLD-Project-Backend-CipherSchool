@@ -11,8 +11,20 @@ const sharedRubric = [
   ['Reasoning & Trade-offs', 10, 'Design choices and alternatives are explained clearly.'],
 ];
 
+const rubricIds = {
+  'Requirement Understanding': 'requirement_understanding',
+  Responsibilities: 'responsibilities',
+  'Encapsulation & Interfaces': 'encapsulation_interfaces',
+  'Relationships & Coupling': 'relationships_coupling',
+  Extensibility: 'extensibility',
+  'Core Flow': 'core_flow',
+  'Edge Cases': 'edge_cases',
+  'Reasoning & Trade-offs': 'reasoning_tradeoffs',
+};
+
 const makeRubric = (overrides = {}) =>
   sharedRubric.map(([criterion, weight, description]) => ({
+    id: rubricIds[criterion],
     criterion,
     weight,
     description: overrides[criterion] ?? description,

@@ -15,4 +15,12 @@ export class MongoSubmissionRepository extends SubmissionRepository {
   async findByAttemptId(attemptId) {
     return Submission.findOne({ attemptId }).sort({ version: -1 }).lean({ virtuals: true });
   }
+
+  async findByUserAndProblem(userId, problemId) {
+    return Submission.find({ userId, problemId }).sort({ submittedAt: -1 }).lean({ virtuals: true });
+  }
+
+  async findByUser(userId) {
+    return Submission.find({ userId }).sort({ submittedAt: -1 }).lean({ virtuals: true });
+  }
 }

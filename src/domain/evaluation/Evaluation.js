@@ -7,7 +7,6 @@ export const EVALUATION_STATUS = Object.freeze({
 export const EVALUATOR_TYPES = Object.freeze({
   DETERMINISTIC: 'DETERMINISTIC',
   AI: 'AI',
-  MOCK: 'MOCK',
 });
 
 export class Evaluation {

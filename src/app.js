@@ -9,8 +9,13 @@ import { authRouter } from './routes/auth.routes.js';
 import { problemRouter } from './routes/problem.routes.js';
 import attemptRouter from './routes/attempt.routes.js';
 import { submissionRouter } from './routes/submission.routes.js';
+import { evaluationRouter } from './routes/evaluation.routes.js';
+import { dashboardRouter } from './routes/dashboard.routes.js';
 
 export const app = express();
+// Required behind Render, Railway, Fly, and other reverse proxies so secure
+// cross-origin session cookies are recognised correctly in production.
+if (env.nodeEnv === 'production') app.set('trust proxy', 1);
 app.use(helmet());
 const corsOptions = {
   origin(origin, callback) {
@@ -31,5 +36,7 @@ app.use('/api/v1/problems', problemRouter);
 app.use('/api/v1/practice', attemptRouter);
 app.use('/api/v1/attempts', attemptRouter);
 app.use('/api/v1', submissionRouter);
+app.use('/api/v1', evaluationRouter);
+app.use('/api/v1/dashboard', dashboardRouter);
 app.use(notFound);
 app.use(errorHandler);

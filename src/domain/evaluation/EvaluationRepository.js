@@ -17,4 +17,8 @@ export class EvaluationRepository {
   async update(_evaluationId, _changes) {
     throw new Error('Not implemented');
   }
+
+  async findBySubmissionIds(_submissionIds) {
+    throw new Error('Not implemented');
+  }
 }

@@ -6,6 +6,10 @@
 2. Start MongoDB locally (or set `MONGODB_URI` to a managed MongoDB connection string).
 3. Run `npm install` and `npm run dev` from this folder.
 
+## AI evaluation setup
+
+Evaluation uses a real provider only; there is no mock fallback. Set `EVALUATOR_PROVIDER` to `gemini` or `openai` and provide the matching API key in `.env`. A successful submission is frozen, then the client sends that immutable snapshot for evaluation. The evaluator receives the complete problem brief, rubric, and submission, while weighted scores are calculated and persisted by the backend.
+
 ## Auth endpoints
 
 | Method | Endpoint | Purpose |

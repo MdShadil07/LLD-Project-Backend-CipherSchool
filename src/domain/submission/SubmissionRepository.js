@@ -13,4 +13,12 @@ export class SubmissionRepository {
   async findByAttemptId(_attemptId) {
     throw new Error('Not implemented');
   }
+
+  async findByUserAndProblem(_userId, _problemId) {
+    throw new Error('Not implemented');
+  }
+
+  async findByUser(_userId) {
+    throw new Error('Not implemented');
+  }
 }
