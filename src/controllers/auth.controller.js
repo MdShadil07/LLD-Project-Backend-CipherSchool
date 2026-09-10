@@ -3,8 +3,10 @@ import { clearAuthCookie, createToken, setAuthCookie } from '../utils/auth-cooki
 import { asyncHandler } from '../utils/async-handler.js';
 
 function establishSession(res, user, statusCode) {
-  setAuthCookie(res, createToken(user.id));
-  return res.status(statusCode).json({ user });
+  const token = createToken(user.id);
+  setAuthCookie(res, token);
+  // Also return token in body so cross-origin clients can use Bearer auth
+  return res.status(statusCode).json({ user, token });
 }
 
 export const signup = asyncHandler(async (req, res) => establishSession(res, await authService.signup(req.body), 201));
