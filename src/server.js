@@ -6,7 +6,7 @@ import { seedProblems } from './infrastructure/database/problem.seed.js';
 async function start() {
   await connectDatabase();
   await seedProblems();
-  app.listen(env.port, () => console.info(`API listening on port ${env.port}`));
+  app.listen(env.port, '0.0.0.0', () => console.info(`API listening on port ${env.port}`));
 }
 
 start().catch((error) => { console.error('Unable to start API', error); process.exit(1); });
