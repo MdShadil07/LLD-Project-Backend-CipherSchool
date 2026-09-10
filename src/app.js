@@ -52,14 +52,12 @@ const allowedOrigins = [
 // Example Render value:
 // CLIENT_URL=https://your-frontend.vercel.app
 if (env.clientUrl) {
-  const configuredOrigins = env.clientUrl
-    .split(',')
-    .map((origin) => origin.trim())
-    .filter(Boolean);
-
-  allowedOrigins.push(...configuredOrigins);
+  if (Array.isArray(env.clientUrl)) {
+    allowedOrigins.push(...env.clientUrl);
+  } else {
+    allowedOrigins.push(env.clientUrl);
+  }
 }
-
 // Remove duplicates.
 const uniqueAllowedOrigins = [...new Set(allowedOrigins)];
 
